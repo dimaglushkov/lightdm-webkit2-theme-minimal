@@ -1,7 +1,7 @@
 # Leo's lightdm-webkit-greeter theme
 *A minimal theme for minimal people*
 
-**Includes night mode - press CTRL**
+**Includes night mode - press ALT**
 
 ![Screenshot of theme in day mode](screenshot.png)
 
@@ -16,5 +16,5 @@
 ## Configuration
 
 * Theme supports automatic day / night mode
-* Set your approximate location by pressing ``CTRL`` on login screen
+* Set your approximate location by pressing ``ALT`` on login screen
     * Location is saved for future logins
