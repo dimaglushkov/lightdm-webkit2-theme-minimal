@@ -1,6 +1,6 @@
 [theme]
 name=Leo's\ Theme
-description=A simple theme with simple colors
+description=A minimal theme for minimal people
 engine=lightdm-webkit-greeter
 url=index.html
 session=i3
