@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<title>lightdm login</title>
-	<script type="text/javascript" src="js/moment.js"></script>
-	<script type="text/javascript" src="js/suncalc.js"></script>
+	<!-- <script type="text/javascript" src="js/moment.js"></script> -->
+	<!-- <script type="text/javascript" src="js/suncalc.js"></script> -->
+	<script type="text/javascript" src="js/main.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/night.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8"/>
 </head>
@@ -14,6 +14,10 @@
 		<ul>
 			<li id="time"></li>
 			<li class="right"><a href="javascript:lightdm.shutdown();">shutdown</a></li>
+			<li class="right"><a href="javascript:lightdm.restart();">reboot</a></li>
+			<li class="right"><a href="javascript:lightdm.suspend();">suspend</a></li>
+
+
 		</ul>
 	</nav>
 	<div id="main_content">
@@ -32,7 +36,6 @@
 			required
 			class="form-field"/>
 			
-			
 			<button type="submit" value="login">log in</button>
 		</form>
 		
@@ -40,192 +43,6 @@
 			
 		</ul>
 	</div>
-	<!-- <script src="js/mock.js"></script> -->
-	<script>
-		let cacheKeyLat = 'leo:config:latitude';
-		let cacheKeyLon = 'leo:config:longitude';
-		// Is the sun above the horizon for a given location right now
-		function is_dark(lat, lon) {
-			let sunPos = window.SunCalc.getPosition(new Date(), lat, lon);
-			
-			return sunPos.altitude < 0
-		}
-		
-		var switchNightMode = function(enable) {
-			var stylesheets = document.styleSheets;
-			var length = stylesheets.length;
-			var i;
-			
-			for(i = 0; i < length; i++) {
-				var ss = stylesheets[i];
-				ss.disabled = (ss.href.indexOf("css/night.css") !== -1) ? !enable : ss.disabled;
-			}
-		};
-		
-		/*********************************************************/
-		/*               Callbacks for the greeter               */
-		/*********************************************************/
-		
-		/**
-		* show_prompt callback.
-		*/
-		window.show_prompt = function(text, type) {
-			console.log("Show Prompt", text, type);
-			
-			password = document.getElementById("password");
-			if(type === 'password') {
-				lightdm.respond(password.value);
-			}
-		};
-		
-		/**
-		* show_message callback.
-		*/
-		window.show_message = function(text, type) {
-			console.log("Show Message");
-			
-			if (0 === text.length) {
-				return;
-			}
-			let messages = document.getElementById('messages');
-			messages.style.visibility = "visible";
-			// type is either "info" or "error"
-			if (type == 'error') {
-				text = `<li style="color:red;">${text}</li>`;
-			}
-			messages.innerHTML = `${messages.innerHTML}${text}`;
-		};
-		
-		/**
-		* authentication_complete callback.
-		*/
-		window.authentication_complete = function() {
-			console.log("Authentication Complete");
-			
-			if (lightdm.is_authenticated) {
-				// Start default session
-				// let body = document.getElementById('body');
-				lightdm.start_session_sync();
-			} else {
-				show_message("Authentication Failed", "error");
-			}
-		};
-		
-		/**
-		* autologin_timer_expired callback.
-		*/
-		function autologin_timer_expired(username) {
-			/* Stub.  Does nothing. */
-		}
-		
-		/*******************************************************************/
-		/*                Functions local to this theme                    */
-		/*******************************************************************/
-		
-		/**
-		* clear_messages
-		*/
-		function clear_messages() {
-			let messages = document.getElementById("messages");
-			messages.innerHTML = "";
-			messages.style.visibility = "hidden";
-		}
-		
-		/**
-		* Called by the username field to start authentication on enter key press
-		*/
-		/*
-		window.check_username = function(evt) {
-			if(evt.keyCode == 13) {
-				let username = document.getElementById('username');
-				start_authentication(username.value);
-				
-				evt.preventDefault();
-			}
-		}
-		*/
-		
-		/**
-		* Kickoff the authentication process
-		*/
-		window.start_authentication = function(username) {
-			console.log("Start Authentication", username);
-			
-			clear_messages();
-			lightdm.authenticate(username);
-		};
-		
-		/**
-		* handle the submit of the form
-		*/
-		window.handle_input = function(e) {
-			console.log("Handle Input");
-			
-			let username = document.getElementById("username");
-			start_authentication(username.value);
-			
-			e.preventDefault();
-		}
-
-		// Attaching listener for position-setting dialog
-		document.addEventListener('keydown', function(e) {
-			// Start the dialog on pressing 'ALT'
-			if(e.keyCode !== 18) {
-				return;
-			}
-
-			var lat = prompt('Latitude: ', localStorage.getItem(cacheKeyLat) || '')
-			var lon = prompt('Longitude: ', localStorage.getItem(cacheKeyLon) || '')
-			localStorage.setItem(cacheKeyLat, lat);
-			localStorage.setItem(cacheKeyLon, lon);
-
-			// Update night mode immediately
-			switchNightMode(is_dark(lat, lon));
-		})
-		
-		// Attaching event listeners and starting repeating timers
-		document.addEventListener('DOMContentLoaded', function() {
-			if(window.lightdm !== undefined && lightdm.hostname !== undefined) {
-				document.getElementById('pagetitle').innerText = lightdm.hostname;
-			}
-			
-			if(window.greeter_config === undefined) {
-				var cfg = {greeter: {time_language: 'auto', time_format: 'LT'}};
-			} else {
-				var cfg = greeter_config;
-			}
-
-			if(cfg.greeter.time_language !== 'auto') {
-				moment.locale(cfg.greeter.time_language);
-			}
-			let format = cfg.greeter.time_format;
-			
-			// Update time now and once a second after that
-			let time = document.getElementById('time');
-			time.innerHTML = moment().format(format);
-			setInterval(() => {
-				time.innerHTML = moment().format(format);
-			}, 1000);
-			
-			// If only one user found, prefill the form
-			if(window.lightdm.users.length === 1) {
-				document.getElementById('username').value = lightdm.users[0].username;
-				document.getElementById('password').focus();
-			}
-
-			var lat = localStorage.getItem(cacheKeyLat) || 53.0958;
-			var lon = localStorage.getItem(cacheKeyLon) || 8.8995;
-
-			// Update night mode calculation
-			switchNightMode(is_dark(lat, lon));
-			setInterval(() => {
-				switchNightMode(is_dark(lat, lon));
-			}, 60 * 1000);
-		});
-		
-		let form = document.getElementById('login');
-		form.addEventListener('submit', handle_input);
-	</script>
 </body>
 </html>
 
