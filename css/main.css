@@ -1,23 +1,18 @@
 @font-face {
-    font-family: 'Inconsolata';
-    src: url(Inconsolata-Regular.ttf);
+    font-family: 'NotoMono Nerd Font';
+    src: url(../assets/notomono-nerd-font.ttf);
     font-weight: normal;
 }
 
-@font-face {
-    font-family: 'Inconsolata';
-    src: url(Inconsolata-Bold.ttf);
-    font-weight: bold;
-}
-
 * {
-    font-family: 'Inconsolata', monospace;
+    font-family: 'NotoMono Nerd Font';
 }
 
 body {
     padding: 0;
     margin: 0;
-    background: white;
+    background: #0E1621;
+    color: #ECF3F7;
 }
 
 #main_content {
@@ -30,6 +25,11 @@ body {
     font-size: 10pt;
     background: black;
     color: white;
+}
+
+#main_nav a:hover {
+    color: gray;
+    cursor: pointer;
 }
 
 #main_nav ul {
@@ -110,15 +110,15 @@ ol {
 .form-field {
     background-color: inherit;
     border: none;
-    border-bottom: 1px dashed lightgray;
+    border-bottom: 1px dashed #ECF3F7;
     font-size: 100%;
-    color: gray;
+    color: #ECF3F7;
     padding: 0;
     margin-bottom: 1em;
 }
 
 #main_content li a:hover {
-    color: black;
+    color: #ECF3F7;
     text-decoration: inherit;
 }
 
@@ -126,7 +126,7 @@ button {
     padding: 0.3em 1em;
     border: none;
     background: none;
-    color: black;
+    color: #ECF3F7;
     font-weight: bold;
     font-size: 100%;
     cursor: pointer;
@@ -139,8 +139,8 @@ button {
     display: inline-block;
 }
 
-h1 a {
-    color: initial;
+h1 {
+    color: #ECF3F7;
 }
 
 p {
