@@ -30,7 +30,7 @@
 	</nav>
 	<div id="main_content">
 		<h1 id="pagetitle">Log in</h1>
-		<form id="login">
+		<form id="login_form" onsubmit="handle_input()">
 			<input  type="text"
 			id="username"
 			placeholder="username"
@@ -51,6 +51,74 @@
 			
 		</ul>
 	</div>
+	<script>
+		window.show_prompt = function(text, type) {   
+			password = document.getElementById("password");
+			if(type === 'password') {
+				lightdm.respond(password.value);
+			}
+		};
+
+		window.show_message = function(text, type) {    
+			if (0 === text.length) {
+				return;
+			}
+			let messages = document.getElementById('messages');
+			messages.style.visibility = "visible";
+			if (type == 'error') {
+				text = `<li style="color:red;">${text}</li>`;
+			}
+			messages.innerHTML = `${messages.innerHTML}${text}`;
+		};
+
+		window.authentication_complete = function() {  
+			if (lightdm.is_authenticated) {
+				lightdm.start_session_sync();
+			} else {
+				show_message("Authentication Failed", "error");
+			}
+		};
+
+		window.start_authentication = function(username) {   
+			clear_messages();
+			lightdm.authenticate(username);
+		};
+
+		window.handle_input = function(e) {   
+			let username = document.getElementById("username");
+			start_authentication(username.value);
+			
+			e.preventDefault();
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+			if(window.lightdm !== undefined && lightdm.hostname !== undefined) {
+				document.getElementById('pagetitle').innerText = lightdm.hostname;
+			}
+			if(windows.lightdm !== undefined && lightdm.sessions !== undefined) {
+				var sessions = lightdm.sessions;
+				var i;
+				for (i = 0; i < sessions.length; i++){
+					console.log(sessions[i]);
+				} 
+			}
+
+			if(window.lightdm.users.length === 1) {
+				document.getElementById('username').value = lightdm.users[0].username;
+				document.getElementById('password').focus();
+			}
+			
+			time = document.getElementById('time')
+			setInterval(() => {
+				time.innerHTML = get_date_time();
+			}, 1000);
+			document.getElementById('time').innerHTML = get_date_time();
+		});
+
+		var form = document.getElementById('login_form');
+		form.addEventListener('submit', handle_input);
+		
+	</script>
 </body>
 </html>
 
