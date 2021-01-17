@@ -110,7 +110,7 @@ function add_session_options() {
     if(window.lightdm !== undefined && lightdm.sessions !== undefined) {
         var i;
         for (i = 0; i < lightdm.sessions.length; i++) {
-            session_names.push(sessions[i].name);
+            session_names.push(lightdm.sessions[i].name);
         } 
     }
     else {
@@ -167,8 +167,14 @@ window.show_message = function(text, type) {
 };
 
 window.authentication_complete = function() {  
-    if (lightdm.is_authenticated && localStorage.getItem(current_session) !== null) {
-        lightdm.start_session_sync();
+    if (lightdm.is_authenticated && localStorage.getItem(current_session) !== null && lightdm.sessions !== undefined ) {
+        choosen_session = null;
+        for (i = 0; i < lightdm.sessions.length; i++) {
+            if (lightdm.sessions[i].name === localStorage.getItem(current_session)) {
+                choosen_session = lightdm.sessions[i];
+            }
+        }
+        lightdm.start_session_sync(choosen_session);
     } else {
         show_message("Authentication Failed", "error");
     }
@@ -181,6 +187,10 @@ window.start_authentication = function(username) {
 
 window.handle_input = function(e) {   
     let username = document.getElementById("username");
+    if (localStorage.getItem(current_session) === null) {
+        show_message('Choose a proper session/desktop enviroment');
+        return;
+    }
     start_authentication(username.value);
     
     e.preventDefault();
