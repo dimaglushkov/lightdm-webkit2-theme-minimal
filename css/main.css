@@ -51,11 +51,6 @@ body {
    float: right;
 }
 
-.right button {
-    padding: 0;
-    font-weight: normal;
-}
-
 .right button:hover, .right button:focus {
     color: gray;
     cursor: pointer;
@@ -151,3 +146,50 @@ h1 {
 p {
     max-width: 50%;
 }
+
+
+.custom-select {
+    position: relative;
+    text-align: right;
+}
+  
+.custom-select select {
+    display: none; 
+}
+  
+.select-selected {
+    background-color: black;
+}
+  
+.select-items div,.select-selected {
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+}
+
+.select-selected {
+    color: #84abff;
+}
+  
+.select-items {
+    position: absolute;
+    background-color: black;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+  
+.select-hide {
+    display: none;
+}
+
+.same-as-selected {
+    display: none; 
+
+}
+  
+.select-items div:hover {
+    background-color: rgba(146, 145, 145, 0.1);
+}
+

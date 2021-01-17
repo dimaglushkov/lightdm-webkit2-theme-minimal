@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
 	<title>lightdm login</title>
-	<!-- <script type="text/javascript" src="js/moment.js"></script> -->
-	<!-- <script type="text/javascript" src="js/suncalc.js"></script> -->
 	<script type="text/javascript" src="js/main.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,12 +15,10 @@
 			<li class="right"><a href="javascript:lightdm.restart();">reboot</a></li>
 			<li class="right"><a href="javascript:lightdm.suspend();">suspend</a></li>
 			<li class="right">
-				<button onclick="set_session()" id="session">session:</button>
-				<!-- <div id="session-dropdown" class="dropdown-content">
-					<a href="#home">Home</a>
-					<a href="#about">About</a>
-					<a href="#contact">Contact</a>
-				</div> -->
+				<div class="custom-select" id="custom-select-div">
+					<select id="session-menu" >
+					</select>
+				  </div>
 			</li>
 
 
@@ -30,7 +26,7 @@
 	</nav>
 	<div id="main_content">
 		<h1 id="pagetitle">Log in</h1>
-		<form id="login_form" onsubmit="handle_input()">
+		<form id="login" onsubmit="handle_input()">
 			<input  type="text"
 			id="username"
 			placeholder="username"
@@ -52,72 +48,8 @@
 		</ul>
 	</div>
 	<script>
-		window.show_prompt = function(text, type) {   
-			password = document.getElementById("password");
-			if(type === 'password') {
-				lightdm.respond(password.value);
-			}
-		};
 
-		window.show_message = function(text, type) {    
-			if (0 === text.length) {
-				return;
-			}
-			let messages = document.getElementById('messages');
-			messages.style.visibility = "visible";
-			if (type == 'error') {
-				text = `<li style="color:red;">${text}</li>`;
-			}
-			messages.innerHTML = `${messages.innerHTML}${text}`;
-		};
-
-		window.authentication_complete = function() {  
-			if (lightdm.is_authenticated) {
-				lightdm.start_session_sync();
-			} else {
-				show_message("Authentication Failed", "error");
-			}
-		};
-
-		window.start_authentication = function(username) {   
-			clear_messages();
-			lightdm.authenticate(username);
-		};
-
-		window.handle_input = function(e) {   
-			let username = document.getElementById("username");
-			start_authentication(username.value);
-			
-			e.preventDefault();
-		}
-
-		document.addEventListener('DOMContentLoaded', function() {
-			if(window.lightdm !== undefined && lightdm.hostname !== undefined) {
-				document.getElementById('pagetitle').innerText = lightdm.hostname;
-			}
-			if(window.lightdm !== undefined && lightdm.sessions !== undefined) {
-				var sessions = lightdm.sessions;
-				var i;
-				for (i = 0; i < sessions.length; i++){
-					console.log(sessions[i]);
-				} 
-			}
-
-			if(window.lightdm.users.length === 1) {
-				document.getElementById('username').value = lightdm.users[0].username;
-				document.getElementById('password').focus();
-			}
-			
-			time = document.getElementById('time')
-			setInterval(() => {
-				time.innerHTML = get_date_time();
-			}, 1000);
-			document.getElementById('time').innerHTML = get_date_time();
-		});
-
-		var form = document.getElementById('login_form');
-		form.addEventListener('submit', handle_input);
-
+		document.getElementById("login").addEventListener("submit", handle_input);
 	</script>
 </body>
 </html>
