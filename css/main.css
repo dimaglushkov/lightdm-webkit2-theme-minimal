@@ -157,10 +157,6 @@ p {
     display: none; 
 }
   
-.select-selected {
-    background-color: black;
-}
-  
 .select-items div,.select-selected {
     color: #ffffff;
     cursor: pointer;
@@ -169,6 +165,10 @@ p {
 
 .select-selected {
     color: #84abff;
+}
+
+.select-selected :hover {
+    color: #4882ff;
 }
   
 .select-items {
@@ -186,7 +186,6 @@ p {
 
 .same-as-selected {
     display: none; 
-
 }
   
 .select-items div:hover {

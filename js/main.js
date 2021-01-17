@@ -174,7 +174,7 @@ window.authentication_complete = function() {
                 choosen_session = lightdm.sessions[i];
             }
         }
-        lightdm.start_session_sync(choosen_session);
+        lightdm.start_session_sync(choosen_session.key);
     } else {
         show_message("Authentication Failed", "error");
     }
@@ -188,12 +188,13 @@ window.start_authentication = function(username) {
 window.handle_input = function(e) {   
     let username = document.getElementById("username");
     if (localStorage.getItem(current_session) === null) {
-        show_message('Choose a proper session/desktop enviroment');
-        return;
+        show_message('Choose a proper session/desktop enviroment', 'error');
+        e.preventDefault();
     }
     start_authentication(username.value);
     
-    e.preventDefault();
+    if (e !== undefined)
+        e.preventDefault();
 }
 
 document.addEventListener("click", close_all_select);
