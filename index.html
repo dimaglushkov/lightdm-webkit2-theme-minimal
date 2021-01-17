@@ -95,7 +95,7 @@
 			if(window.lightdm !== undefined && lightdm.hostname !== undefined) {
 				document.getElementById('pagetitle').innerText = lightdm.hostname;
 			}
-			if(windows.lightdm !== undefined && lightdm.sessions !== undefined) {
+			if(window.lightdm !== undefined && lightdm.sessions !== undefined) {
 				var sessions = lightdm.sessions;
 				var i;
 				for (i = 0; i < sessions.length; i++){
@@ -117,7 +117,7 @@
 
 		var form = document.getElementById('login_form');
 		form.addEventListener('submit', handle_input);
-		
+
 	</script>
 </body>
 </html>
