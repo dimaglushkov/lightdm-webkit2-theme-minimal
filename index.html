@@ -16,7 +16,14 @@
 			<li class="right"><a href="javascript:lightdm.shutdown();">shutdown</a></li>
 			<li class="right"><a href="javascript:lightdm.restart();">reboot</a></li>
 			<li class="right"><a href="javascript:lightdm.suspend();">suspend</a></li>
-			<li class="right"><span id="session">session: unknown</span></li>
+			<li class="right">
+				<button onclick="set_session()" id="session">session:</button>
+				<!-- <div id="session-dropdown" class="dropdown-content">
+					<a href="#home">Home</a>
+					<a href="#about">About</a>
+					<a href="#contact">Contact</a>
+				</div> -->
+			</li>
 
 
 		</ul>

@@ -51,11 +51,16 @@ body {
    float: right;
 }
 
-/*
-#main_nav ul li.right:last-child {
-    padding-right: 0;
+.right button {
+    padding: 0;
+    font-weight: normal;
 }
-*/
+
+.right button:hover, .right button:focus {
+    color: gray;
+    cursor: pointer;
+}
+
 
 #main_nav a {
     color: inherit;

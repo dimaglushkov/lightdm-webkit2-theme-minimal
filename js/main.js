@@ -1,4 +1,6 @@
-function getDateTime() {
+let current_session = 'greeter:config:session';
+
+function get_date_time() {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     var now     = new Date(); 
     var year    = now.getFullYear();
@@ -28,6 +30,14 @@ function clear_messages() {
     let messages = document.getElementById("messages");
     messages.innerHTML = "";
     messages.style.visibility = "hidden";
+}
+
+function select_session() {
+
+}
+
+function set_session() {
+    console.log("lol")
 }
 
 
@@ -70,46 +80,18 @@ window.handle_input = function(e) {
     e.preventDefault();
 }
 
-document.addEventListener('keydown', function(e) {
-    // Start the dialog on pressing 'ALT'
-    if(e.keyCode !== 18) {
-        return;
-    }
-
-    var lat = prompt('Latitude: ', localStorage.getItem(cacheKeyLat) || '')
-    var lon = prompt('Longitude: ', localStorage.getItem(cacheKeyLon) || '')
-    localStorage.setItem(cacheKeyLat, lat);
-    localStorage.setItem(cacheKeyLon, lon);
-
-    // Update night mode immediately
-    switchNightMode(is_dark(lat, lon));
-})
-
 document.addEventListener('DOMContentLoaded', function() {
     if(window.lightdm !== undefined && lightdm.hostname !== undefined) {
         document.getElementById('pagetitle').innerText = lightdm.hostname;
     }
     
-    if(window.greeter_config === undefined) {
-        var cfg = {greeter: {time_language: 'auto', time_format: 'LT'}};
-    } else {
-        var cfg = greeter_config;
-    }
-
-    // if(cfg.greeter.time_language !== 'auto') {
-        // moment.locale(cfg.greeter.time_language);
-    // }
     time = document.getElementById('time')
     setInterval(() => {
-        time.innerHTML = getDateTime();
+        time.innerHTML = get_date_time();
     }, 1000);
-    document.getElementById('time').innerHTML = getDateTime();
-
-    
+    document.getElementById('time').innerHTML = get_date_time();
     document.getElementById('session').innerHTML = lightdm.default_session
 
-    
-    // If only one user found, prefill the form
     if(window.lightdm.users.length === 1) {
         document.getElementById('username').value = lightdm.users[0].username;
         document.getElementById('password').focus();
