@@ -103,19 +103,21 @@ function close_all_select(elmnt) {
 }
 
 function add_session_options() {
-    session_names = ["i365", "gnome-elf", "kedi"];
-
-    // if(window.lightdm !== undefined && lightdm.sessions !== undefined) {
-    //     var sessions = lightdm.sessions;
-    //     var i;
-    //     for (i = 0; i < sessions.length; i++){
-    //         console.log(sessions[i]);
-    //     } 
-    // }
-
+    session_names = [];
     max_session_name_len = 0;
     session_menu = document.getElementById("session-menu");
-    if (localStorage.getItem(current_session) !== null) {
+
+    if(window.lightdm !== undefined && lightdm.sessions !== undefined) {
+        var i;
+        for (i = 0; i < lightdm.sessions.length; i++) {
+            session_names.push(sessions[i].name);
+        } 
+    }
+    else {
+        show_message("Unable to get the list of available sessions / desktop enviroments", "error")
+    }
+
+    if (localStorage.getItem(current_session) !== null && session_names.includes(localStorage.getItem(current_session))) {
         session_menu.innerHTML = `<option value="0">${localStorage.getItem(current_session)}</option>`;
         max_session_name_len = localStorage.getItem(current_session).length;
     }
@@ -165,7 +167,7 @@ window.show_message = function(text, type) {
 };
 
 window.authentication_complete = function() {  
-    if (lightdm.is_authenticated) {
+    if (lightdm.is_authenticated && localStorage.getItem(current_session) !== null) {
         lightdm.start_session_sync();
     } else {
         show_message("Authentication Failed", "error");
