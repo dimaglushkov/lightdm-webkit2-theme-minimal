@@ -52,8 +52,6 @@ window.show_message = function(text, type) {
 
 window.authentication_complete = function() {  
     if (lightdm.is_authenticated) {
-        // Start default session
-        // let body = document.getElementById('body');
         lightdm.start_session_sync();
     } else {
         show_message("Authentication Failed", "error");
@@ -98,18 +96,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var cfg = greeter_config;
     }
 
-    if(cfg.greeter.time_language !== 'auto') {
-        moment.locale(cfg.greeter.time_language);
-    }
+    // if(cfg.greeter.time_language !== 'auto') {
+        // moment.locale(cfg.greeter.time_language);
+    // }
+    time = document.getElementById('time')
+    setInterval(() => {
+        time.innerHTML = getDateTime();
+    }, 1000);
     document.getElementById('time').innerHTML = getDateTime();
-    // let format = cfg.greeter.time_format;
+
     
-    // // Update time now and once a second after that
-    // let time = ;
-    // time.innerHTML = moment().format(format);
-    // setInterval(() => {
-    // 	time.innerHTML = getDateTime();
-    // }, 1000);
+    document.getElementById('session').innerHTML = lightdm.default_session
+
     
     // If only one user found, prefill the form
     if(window.lightdm.users.length === 1) {
@@ -117,14 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('password').focus();
     }
 
-    var lat = localStorage.getItem(cacheKeyLat) || 53.0958;
-    var lon = localStorage.getItem(cacheKeyLon) || 8.8995;
-
-    // Update night mode calculation
-    switchNightMode(is_dark(lat, lon));
-    setInterval(() => {
-        switchNightMode(is_dark(lat, lon));
-    }, 60 * 1000);
 });
 
 
