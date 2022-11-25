@@ -1,5 +1,5 @@
-# A minimal lightdm-webkit2-greeter theme
-Simple theme for a lightdm display manager with a webkit2 greeter.
+# Minimalistic lightdm-webkit2-greeter theme
+Simple theme for lightdm display manager with webkit2 greeter.
 ![Screen sample 1](https://github.com/dimaglushkov/lightdm-webkit2-theme-minimal/blob/master/assets/screenshots/screenshot-1.jpg)
 
 ![Screen sample 2](https://github.com/dimaglushkov/lightdm-webkit2-theme-minimal/blob/master/assets/screenshots/screenshot-2.jpg)
