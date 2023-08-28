@@ -3,4 +3,3 @@ name=minimal
 description=A minimal theme for lightdm webkit2 greeter
 engine=lightdm-webkit-greeter
 url=index.html
-session=i3
