@@ -20,3 +20,7 @@ This is a theme for [web greeter](https://github.com/Antergos/web-greeter) there
 
 -   [lightdm](https://github.com/canonical/lightdm)
 -   [web greeter](https://github.com/Antergos/web-greeter)
+
+### Developing
+
+To make the developing experience more enjoyable the theme can be deployed in a browser as well as natively. To test the theme natively run `sudo ./install.sh --test-mode` this will install the theme and then open a window showing the theme. See [web greeter](https://github.com/Antergos/web-greeter) for more details on how to setup web-greeter for debugging.
